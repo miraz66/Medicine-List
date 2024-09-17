@@ -52,6 +52,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         git branch -M main git push -u origin
                                         git branch -M main git push -u origin
                                         git branch -M main git push -u origin
+                                        git branch -M main git push -u origin
+                                        git branch -M main git push -u origin
                                         main
                                     </Link>
                                 ) : (
