@@ -45,7 +45,12 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     >
                                         Dashboard Dashboard Dashboard Dashboard
                                         Dashboard Dashboard Dashboard Dashboard
-                                        Dashboard
+                                        Dashboard Dashboard Dashboard Dashboard
+                                        Dashboard Dashboard Dashboard Dashboard
+                                        Dashboard git remote add origin
+                                        https://github.com/miraz66/Medicine-List.git
+                                        git branch -M main git push -u origin
+                                        main
                                     </Link>
                                 ) : (
                                     <>
