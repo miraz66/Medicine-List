@@ -50,6 +50,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         Dashboard git remote add origin
                                         https://github.com/miraz66/Medicine-List.git
                                         git branch -M main git push -u origin
+                                        git branch -M main git push -u origin
+                                        git branch -M main git push -u origin
                                         main
                                     </Link>
                                 ) : (
