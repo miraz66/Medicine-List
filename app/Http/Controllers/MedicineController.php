@@ -12,7 +12,8 @@ class MedicineController extends Controller
 {
     public function index()
     {
-        $medicines = MedicineResource::collection(Medicine::paginate(15));
+        //lest to first for data
+        $medicines = MedicineResource::collection(Medicine::latest()->paginate(15));
 
         return inertia('Dashboard', ['medicines' => $medicines]);
     }
@@ -24,14 +25,8 @@ class MedicineController extends Controller
 
     public function store(StoreMedicineRequest $request)
     {
-
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            // Store the image in the 'public/images' directory
-            $imageName = $request->file('image')->store('images', 'public');
-        } else {
-            $imageName = null;
-        }
+        $imageName = $request->hasFile('image') ? $request->file('image')
+            ->store('images', 'public') : null;
 
         // Create the medicine record
         Medicine::create([
@@ -57,6 +52,6 @@ class MedicineController extends Controller
     public function destroy($id)
     {
         Medicine::destroy($id);
-        return response()->json(null, 204); // Delete a medicine
+        return redirect('/dashboard');
     }
 }

@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import SuccessMessage from "@/Components/SuccessMessage";
@@ -151,7 +151,13 @@ export default function Create() {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex items-center justify-end mt-4">
+                    <div className="flex items-center justify-between mt-4">
+                        <Link
+                            href={route("medicines.index")}
+                            className="text-sm text-gray-100 hover:text-gray-900 mr-2"
+                        >
+                            Cancel
+                        </Link>
                         <button
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

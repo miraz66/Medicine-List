@@ -1,6 +1,6 @@
 import MedicineList from "@/Components/MedicineList";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Dashboard({ medicines }) {
     return (
@@ -10,11 +10,11 @@ export default function Dashboard({ medicines }) {
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200/50 leading-tight">
                         Dashboard
                     </h2>
-                    <a href="/medicines/create">
+                    <Link href="/medicines/create">
                         <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md">
                             Add new
                         </button>
-                    </a>
+                    </Link>
                 </div>
             }
         >
