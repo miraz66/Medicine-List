@@ -20,7 +20,7 @@ class MedicineController extends Controller
 
     public function create()
     {
-        return inertia('Medicine/Create');
+        return inertia('Medicines/Create');
     }
 
     public function store(StoreMedicineRequest $request)

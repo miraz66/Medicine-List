@@ -17,9 +17,12 @@ class SalesFactory extends Factory
     public function definition(): array
     {
         return [
+            'medicine_name' => $this->faker->name(),
             'medicine_id' => $this->faker->numberBetween(1, 10),
+            'company_name' => $this->faker->company(),
             'quantity' => $this->faker->numberBetween(1, 100),
             'total_price' => $this->faker->numberBetween(1, 100),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

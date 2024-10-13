@@ -2,13 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSalesRequest;
+use App\Http\Resources\SalesResource;
 use App\Models\Medicine;
 use App\Models\Sales;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
-    public function store(Request $request)
+    public function index()
+    {
+        $sales = SalesResource::collection(Sales::latest()->paginate(15));
+        return inertia('Sales/Index', ['sales' => $sales]);
+    }
+    public function create()
+    {
+        $medicines = Medicine::all(); // Fetch all medicines
+
+        return inertia('Sales/Create', ['medicines' => $medicines]);
+    }
+
+    public function store(StoreSalesRequest $request)
     {
         $medicine = Medicine::findOrFail($request->medicine_id);
 
@@ -18,15 +33,16 @@ class SaleController extends Controller
             $medicine->save();
 
             $total_price = $request->quantity * $medicine->price;
-            $sale = Sales::create([
+            Sales::create([
                 'medicine_id' => $medicine->id,
+                'medicine_name' => $medicine->name,
                 'quantity' => $request->quantity,
                 'total_price' => $total_price,
             ]);
 
             redirect(route('dashboard', absolute: false));
         } else {
-            return response()->json(['error' => 'Insufficient stock'], 400);
+            return redirect()->back()->with('error', 'Not enough stock');
         }
     }
 }

@@ -29,7 +29,9 @@ Route::post('/medicines', [MedicineController::class, 'store'])->name('medicines
 Route::put('/medicines/{id}', [MedicineController::class, 'update'])->name('medicines.update');
 Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
 
-Route::post('/sales', [SaleController::class, 'store']);
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
+Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 
 
 Route::middleware('auth')->group(function () {

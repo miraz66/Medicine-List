@@ -1,4 +1,4 @@
-import { Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import SuccessMessage from "@/Components/SuccessMessage";
@@ -39,6 +39,8 @@ export default function Create() {
 
     return (
         <div className="bg-gray-600 min-h-screen pt-40">
+            <Head title="Create" />
+
             {showSuccessMessage && (
                 <SuccessMessage message="Medicine created successfully!" />
             )}
