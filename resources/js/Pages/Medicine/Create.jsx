@@ -1,43 +1,66 @@
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import InputLabel from "@/Components/InputLabel";
+import SuccessMessage from "@/Components/SuccessMessage";
+import TextInput from "@/Components/TextInput";
 
-export default function Create({ success }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
-        company_name: "",
-        stock: "",
-        price: "",
-        image: "",
-    });
+export default function Create() {
+    const { data, setData, post, processing, errors, reset, wasSuccessful } =
+        useForm({
+            name: "",
+            company_name: "",
+            stock: "",
+            price: "",
+            image: null,
+        });
 
-    console.log(success);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    useEffect(() => {
+        if (wasSuccessful) {
+            setShowSuccessMessage(true);
+
+            // Hide success message after 5 seconds
+            const timeout = setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 3000);
+
+            // Cleanup the timeout when the component unmounts or when wasSuccessful changes
+            return () => clearTimeout(timeout);
+        }
+    }, [wasSuccessful]);
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("medicines.store"));
+        post(route("medicines.store"), {
+            onSuccess: () => reset(), // Reset the form upon successful submission
+        });
     };
 
     return (
         <div className="bg-gray-600 min-h-screen pt-40">
+            {showSuccessMessage && (
+                <SuccessMessage message="Medicine created successfully!" />
+            )}
+
             <div className="max-w-3xl mx-auto p-10 shadow-xl shadow-gray-700">
                 <h1 className="text-2xl font-bold mb-4 text-gray-100">
                     Create Medicine
                 </h1>
 
                 <form onSubmit={submit}>
+                    {/* Name Field */}
                     <div className="mt-4">
                         <InputLabel htmlFor="name" value="Name" />
                         <TextInput
                             id="name"
                             name="name"
                             type="text"
+                            value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
                             className="mt-1 block w-full"
                             autoComplete="name"
                         />
-
                         {errors.name && (
                             <div className="text-sm text-red-600">
                                 {errors.name}
@@ -45,6 +68,7 @@ export default function Create({ success }) {
                         )}
                     </div>
 
+                    {/* Company Name Field */}
                     <div className="mt-4">
                         <InputLabel
                             htmlFor="companyName"
@@ -54,13 +78,13 @@ export default function Create({ success }) {
                             id="companyName"
                             name="companyName"
                             type="text"
+                            value={data.company_name}
                             onChange={(e) =>
                                 setData("company_name", e.target.value)
                             }
                             className="mt-1 block w-full"
                             autoComplete="companyName"
                         />
-
                         {errors.company_name && (
                             <div className="text-sm text-red-600">
                                 {errors.company_name}
@@ -68,17 +92,18 @@ export default function Create({ success }) {
                         )}
                     </div>
 
+                    {/* Stock Field */}
                     <div className="mt-4">
                         <InputLabel htmlFor="stock" value="Stock" />
                         <TextInput
                             id="stock"
                             name="stock"
                             type="number"
+                            value={data.stock}
                             onChange={(e) => setData("stock", e.target.value)}
                             className="mt-1 block w-full"
                             autoComplete="stock"
                         />
-
                         {errors.stock && (
                             <div className="text-sm text-red-600">
                                 {errors.stock}
@@ -86,17 +111,18 @@ export default function Create({ success }) {
                         )}
                     </div>
 
+                    {/* Price Field */}
                     <div className="mt-4">
                         <InputLabel htmlFor="price" value="Price" />
                         <TextInput
                             id="price"
                             name="price"
                             type="number"
+                            value={data.price}
                             onChange={(e) => setData("price", e.target.value)}
                             className="mt-1 block w-full"
                             autoComplete="price"
                         />
-
                         {errors.price && (
                             <div className="text-sm text-red-600">
                                 {errors.price}
@@ -104,19 +130,19 @@ export default function Create({ success }) {
                         )}
                     </div>
 
+                    {/* Image Upload */}
                     <div className="mt-4">
-                        <InputLabel htmlFor="images" value="Images" />
+                        <InputLabel htmlFor="image" value="Image" />
                         <TextInput
-                            id="images"
-                            name="images"
+                            id="image"
+                            name="image"
                             type="file"
                             onChange={(e) =>
                                 setData("image", e.target.files[0])
                             }
                             className="mt-1 block w-full cursor-pointer"
-                            autoComplete="images"
+                            autoComplete="image"
                         />
-
                         {errors.image && (
                             <div className="text-sm text-red-600">
                                 {errors.image}
@@ -124,12 +150,14 @@ export default function Create({ success }) {
                         )}
                     </div>
 
+                    {/* Submit Button */}
                     <div className="flex items-center justify-end mt-4">
                         <button
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            disabled={processing}
                         >
-                            Create
+                            {processing ? "Processing..." : "Create"}
                         </button>
                     </div>
                 </form>

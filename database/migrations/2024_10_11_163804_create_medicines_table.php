@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('company_name');
             $table->integer('stock');
             $table->decimal('price', 8, 2);

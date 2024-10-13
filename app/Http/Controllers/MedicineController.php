@@ -22,22 +22,15 @@ class MedicineController extends Controller
         return inertia('Medicine/Create');
     }
 
-    public function store(Request $request)
+    public function store(StoreMedicineRequest $request)
     {
-
-        // Validate the request
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048', // 2MB Max
-            'company_name' => 'required|string|max:255',
-            'stock' => 'required|integer',
-            'price' => 'required|numeric',
-        ]);
 
         // Handle image upload
         if ($request->hasFile('image')) {
             // Store the image in the 'public/images' directory
             $imageName = $request->file('image')->store('images', 'public');
+        } else {
+            $imageName = null;
         }
 
         // Create the medicine record
@@ -50,7 +43,7 @@ class MedicineController extends Controller
         ]);
 
         // Redirect to the dashboard with a success message
-        return redirect()->route('medicines.create')->with('success', 'Medicine created successfully!');
+        return redirect()->route('medicines.create');
     }
 
 
