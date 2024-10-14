@@ -22,7 +22,6 @@ class StoreSalesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'medicine_name' => ['required', 'string'],
             'medicine_id' => ['required', 'numeric'],
             'quantity' => ['required', 'numeric'],
             'total_price' => ['required', 'numeric'],
@@ -32,7 +31,6 @@ class StoreSalesRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'medicine_name.required' => 'Medicine name is required',
             'medicine_id.required' => 'Medicine id is required',
             'quantity.required' => 'Quantity is required',
             'total_price.required' => 'Total price is required',

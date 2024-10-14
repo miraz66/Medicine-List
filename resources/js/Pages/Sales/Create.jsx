@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
@@ -9,16 +9,26 @@ export default function SaleForm({ medicines }) {
         useForm({
             medicine_id: "",
             quantity: "",
+            total_price: "",
         });
 
     const [selectedMedicine, setSelectedMedicine] = useState(null);
 
+    // Update the selected medicine when the user selects one
     const handleMedicineChange = (e) => {
         const selectedId = e.target.value;
         setData("medicine_id", selectedId);
         const medicine = medicines.find((med) => med.id == selectedId);
         setSelectedMedicine(medicine);
     };
+
+    // Update total price whenever the medicine or quantity changes
+    useEffect(() => {
+        if (selectedMedicine && data.quantity) {
+            const total = data.quantity * selectedMedicine.price;
+            setData("total_price", total); // Set total price in form data
+        }
+    }, [selectedMedicine, data.quantity]); // Recalculate total price when either changes
 
     const submit = (e) => {
         e.preventDefault();
@@ -28,15 +38,27 @@ export default function SaleForm({ medicines }) {
         });
     };
 
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     useEffect(() => {
         if (wasSuccessful) {
-            setTimeout(() => reset(), 5000); // Optional: Reset the form after 5 seconds
+            setShowSuccessMessage(true);
+
+            // Hide success message after 5 seconds
+            const timeout = setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 3000);
+
+            // Cleanup the timeout when the component unmounts or when wasSuccessful changes
+            return () => clearTimeout(timeout);
         }
     }, [wasSuccessful]);
 
     return (
-        <div className="bg-gray-600 min-h-screen pt-20">
-            {wasSuccessful && (
+        <div className="bg-gray-600 min-h-screen pt-40">
+            <Head title="Create Sale" />
+
+            {/* Success Message */}
+            {showSuccessMessage && (
                 <SuccessMessage message="Sale recorded successfully!" />
             )}
 
@@ -98,13 +120,19 @@ export default function SaleForm({ medicines }) {
                         <div className="mt-4">
                             <InputLabel value="Total Price" />
                             <p className="text-gray-100">
-                                {data.quantity * selectedMedicine.price} $
+                                $ {data.total_price}
                             </p>
                         </div>
                     )}
 
                     {/* Submit Button */}
-                    <div className="flex items-center justify-end mt-4">
+                    <div className="flex items-center justify-between mt-4">
+                        <Link
+                            href="/sales"
+                            className="text-sm text-gray-200 hover:text-gray-300"
+                        >
+                            Cancel
+                        </Link>
                         <button
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

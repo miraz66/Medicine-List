@@ -34,8 +34,9 @@ class SaleController extends Controller
 
             $total_price = $request->quantity * $medicine->price;
             Sales::create([
-                'medicine_id' => $medicine->id,
                 'medicine_name' => $medicine->name,
+                'company_name' => $medicine->company_name,
+                'medicine_id' => $request->medicine_id,
                 'quantity' => $request->quantity,
                 'total_price' => $total_price,
             ]);
@@ -44,5 +45,11 @@ class SaleController extends Controller
         } else {
             return redirect()->back()->with('error', 'Not enough stock');
         }
+    }
+
+    public function destroy($id)
+    {
+        Sales::destroy($id);
+        return redirect('/sales');
     }
 }

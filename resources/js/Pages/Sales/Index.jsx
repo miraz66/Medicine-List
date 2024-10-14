@@ -1,9 +1,14 @@
 import Pagination from "@/Components/Pagination";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Index({ sales }) {
-    console.log(sales.data);
+    const { delete: destroy } = useForm();
+
+    // Delete a medicine
+    const destroyMedicine = (id) => {
+        destroy(`/sales/${id}`);
+    };
     return (
         <AuthenticatedLayout
             header={
@@ -85,10 +90,10 @@ export default function Index({ sales }) {
                                             {/* Delete button */}
                                             <td className="py-2 px-4 float-end">
                                                 <button
+                                                    className="px-4 py-2 text-red-500 rounded-md"
                                                     onClick={() =>
                                                         destroyMedicine(sale.id)
                                                     }
-                                                    className="text-red-500 hover:text-red-700"
                                                 >
                                                     Delete
                                                 </button>
