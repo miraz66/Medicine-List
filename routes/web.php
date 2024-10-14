@@ -16,11 +16,6 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-
 Route::get('/dashboard', [MedicineController::class, 'index'])->name('dashboard');
 
 Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines.index');
@@ -29,11 +24,14 @@ Route::post('/medicines', [MedicineController::class, 'store'])->name('medicines
 Route::put('/medicines/{id}', [MedicineController::class, 'update'])->name('medicines.update');
 Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
 
+// Medicine Sales
 Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
 Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
 
+// Stock out
+Route::get('/stock-out', [MedicineController::class, 'stockOut'])->name('stock-out');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -41,7 +41,6 @@ class MedicineController extends Controller
         return redirect()->route('medicines.create');
     }
 
-
     public function update(Request $request, $id)
     {
         $medicine = Medicine::findOrFail($id);
@@ -53,5 +52,10 @@ class MedicineController extends Controller
     {
         Medicine::destroy($id);
         return redirect('/dashboard');
+    }
+
+    public function stockOut()
+    {
+        return inertia('Medicines/StockOut');
     }
 }
