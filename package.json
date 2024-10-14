@@ -20,6 +20,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "@heroicons/react": "^2.1.5"
+        "@heroicons/react": "^2.1.5",
+        "html2pdf.js": "^0.10.2",
+        "react-to-print": "^3.0.1"
     }
 }

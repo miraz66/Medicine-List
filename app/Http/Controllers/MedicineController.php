@@ -56,6 +56,13 @@ class MedicineController extends Controller
 
     public function stockOut()
     {
-        return inertia('Medicines/StockOut');
+        // Fetch medicines where stock is less than 15
+        $medicines = Medicine::where('stock', '<=', 15)->latest()->paginate(15);
+
+        // Optionally, wrap the medicines in a resource collection
+        $medicines = MedicineResource::collection($medicines);
+
+        // Return to the Inertia 'StockOut' page with filtered medicines
+        return inertia('Medicines/StockOut', ['medicines' => $medicines]);
     }
 }
