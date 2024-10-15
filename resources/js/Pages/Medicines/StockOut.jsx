@@ -1,16 +1,40 @@
 import MedicineList from "@/Components/MedicineList";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { useRef } from "react";
-import html2pdf from "html2pdf.js";
 import { PrinterIcon } from "@heroicons/react/20/solid";
 
 export default function StockOut({ medicines }) {
-    const medicineListRef = useRef();
+    const handlePrint = () => {
+        const content = document.getElementById("divcontents").innerHTML;
+        const pri = document.getElementById("ifmcontentstoprint").contentWindow;
 
-    const handleDownloadPDF = () => {
-        const element = medicineListRef.current;
-        html2pdf().from(element).save("medicine-list.pdf");
+        pri.document.open();
+        pri.document.write(`
+            <html>
+                <head>
+                    <title>Print</title>
+                    <style>
+                        /* Add your print styles here */
+                        @media print {
+                            body {
+                                font-family: Arial, sans-serif;
+                                color: black;
+
+                            }
+                            .no-print {
+                                display: none; /* Hide elements with this class when printing */
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${content}
+                </body>
+            </html>
+        `);
+        pri.document.close();
+        pri.focus();
+        pri.print();
     };
 
     return (
@@ -22,8 +46,8 @@ export default function StockOut({ medicines }) {
                             Dashboard
                         </h2>
                         <button
-                            onClick={handleDownloadPDF}
-                            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md"
+                            onClick={handlePrint}
+                            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md no-print"
                         >
                             <PrinterIcon className="w-5 h-5" />
                         </button>
@@ -35,13 +59,18 @@ export default function StockOut({ medicines }) {
                 <div className="py-12">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div ref={medicineListRef}>
+                            <div id="divcontents">
                                 <MedicineList medicines={medicines} />
                             </div>
                         </div>
                     </div>
                 </div>
             </AuthenticatedLayout>
+            {/* Hidden iframe for printing */}
+            <iframe
+                id="ifmcontentstoprint"
+                style={{ display: "none" }}
+            ></iframe>
         </div>
     );
 }

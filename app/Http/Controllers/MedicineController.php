@@ -57,7 +57,7 @@ class MedicineController extends Controller
     public function stockOut()
     {
         // Fetch medicines where stock is less than 15
-        $medicines = Medicine::where('stock', '<=', 15)->latest()->paginate(15);
+        $medicines = Medicine::where('stock', '<=', 15)->latest()->paginate(30);
 
         // Optionally, wrap the medicines in a resource collection
         $medicines = MedicineResource::collection($medicines);
