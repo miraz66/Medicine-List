@@ -41,11 +41,17 @@ class MedicineController extends Controller
         return redirect()->route('medicines.create');
     }
 
+    public function edit($id)
+    {
+        $medicine = Medicine::findOrFail($id);
+        return inertia('Medicines/Edit', ['medicine' => $medicine]);
+    }
+
     public function update(Request $request, $id)
     {
         $medicine = Medicine::findOrFail($id);
         $medicine->update($request->all());
-        return response()->json($medicine);
+        return redirect('/stock-out');
     }
 
     public function destroy($id)
@@ -57,7 +63,7 @@ class MedicineController extends Controller
     public function stockOut()
     {
         // Fetch medicines where stock is less than 15
-        $medicines = Medicine::where('stock', '<=', 15)->latest()->paginate(30);
+        $medicines = Medicine::where('stock', '<=', 15)->latest()->paginate(40);
 
         // Optionally, wrap the medicines in a resource collection
         $medicines = MedicineResource::collection($medicines);

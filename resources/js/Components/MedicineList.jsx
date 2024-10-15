@@ -31,12 +31,12 @@ const MedicineList = ({ medicines }) => {
                             <td className="py-2 px-4">{medicine.stock}</td>
                             <td className="py-2 px-4">${medicine.price}</td>
                             <td className="py-2 px-4 space-x-6 float-end">
-                                <a
+                                <Link
                                     href={`/medicines/${medicine.id}/edit`}
                                     className="text-blue-500 hover:text-blue-700"
                                 >
                                     Edit
-                                </a>
+                                </Link>
                                 <button
                                     onClick={() => destroyMedicine(medicine.id)}
                                     className="text-red-500 hover:text-red-700"

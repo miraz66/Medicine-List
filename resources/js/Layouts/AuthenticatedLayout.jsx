@@ -42,7 +42,7 @@ export default function Authenticated({ header, children }) {
                                     href={route("stock-out")}
                                     active={route().current("stock-out")}
                                 >
-                                    Stock out
+                                    Stock Low
                                 </NavLink>
                             </div>
                         </div>
