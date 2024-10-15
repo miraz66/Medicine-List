@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\MedicineFilter;
 use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Resources\MedicineResource;
 use App\Models\Medicine;
@@ -10,13 +11,27 @@ use Illuminate\Http\Request;
 
 class MedicineController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //lest to first for data
-        $medicines = MedicineResource::collection(Medicine::latest()->paginate(15));
+        // Create a base query for medicines
+        $query = Medicine::latest();
 
-        return inertia('Dashboard', ['medicines' => $medicines]);
+        // Apply the filters using the MedicineFilter class
+        $filteredQuery = MedicineFilter::apply($query, $request);
+
+        // Paginate the filtered results
+        $medicines = MedicineResource::collection($filteredQuery->paginate(30));
+
+        // Pass the filters back to the frontend
+        return inertia('Dashboard', [
+            'medicines' => $medicines,
+            'search' => $request->input('search'),
+            'category' => $request->input('category'),
+            'min_price' => $request->input('min_price'),
+            'max_price' => $request->input('max_price'),
+        ]);
     }
+
 
     public function create()
     {
@@ -60,13 +75,16 @@ class MedicineController extends Controller
         return redirect('/dashboard');
     }
 
-    public function stockOut()
+    public function stockOut(Request $request)
     {
         // Fetch medicines where stock is less than 15
-        $medicines = Medicine::where('stock', '<=', 15)->latest()->paginate(40);
+        $query = Medicine::where('stock', '<=', 15)->latest();
 
-        // Optionally, wrap the medicines in a resource collection
-        $medicines = MedicineResource::collection($medicines);
+        // Apply the filters using the MedicineFilter class
+        $filteredQuery = MedicineFilter::apply($query, $request);
+
+        // Paginate the filtered results
+        $medicines = MedicineResource::collection($filteredQuery->paginate(30));
 
         // Return to the Inertia 'StockOut' page with filtered medicines
         return inertia('Medicines/StockOut', ['medicines' => $medicines]);

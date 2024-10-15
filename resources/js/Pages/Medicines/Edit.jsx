@@ -5,14 +5,22 @@ import SuccessMessage from "@/Components/SuccessMessage";
 import TextInput from "@/Components/TextInput";
 
 export default function Create({ medicine }) {
-    const { data, setData, post, processing, errors, reset, wasSuccessful } =
-        useForm({
-            name: medicine.name || "",
-            company_name: medicine.company_name || "",
-            stock: medicine.stock || "",
-            price: medicine.price || "",
-            image: medicine.image || null,
-        });
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        wasSuccessful,
+        patch,
+    } = useForm({
+        name: medicine.name || "",
+        company_name: medicine.company_name || "",
+        stock: medicine.stock || "",
+        price: medicine.price || "",
+        image: medicine.image || null,
+    });
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     useEffect(() => {
@@ -32,7 +40,7 @@ export default function Create({ medicine }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("medicines.store"), {
+        patch(route("medicines.update", medicine.id), {
             onSuccess: () => reset(), // Reset the form upon successful submission
         });
     };

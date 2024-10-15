@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\MedicineFilter;
 use App\Http\Requests\StoreSalesRequest;
+use App\Http\Resources\MedicineResource;
 use App\Http\Resources\SalesResource;
 use App\Models\Medicine;
 use App\Models\Sales;
@@ -13,7 +15,11 @@ class SaleController extends Controller
 {
     public function index()
     {
-        $sales = SalesResource::collection(Sales::latest()->paginate(15));
+        $query = Sales::latest();
+
+        $filteredQuery = MedicineFilter::apply($query, request());
+
+        $sales = MedicineResource::collection($filteredQuery->paginate(30));
         return inertia('Sales/Index', ['sales' => $sales]);
     }
     public function create()

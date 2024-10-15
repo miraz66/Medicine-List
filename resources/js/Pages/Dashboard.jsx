@@ -1,4 +1,5 @@
 import MedicineList from "@/Components/MedicineList";
+import SearchItems from "@/Components/SearchItems";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
@@ -10,6 +11,7 @@ export default function Dashboard({ medicines }) {
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200/50 leading-tight">
                         Dashboard
                     </h2>
+                    <SearchItems route="dashboard" />
                     <Link href="/medicines/create">
                         <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md">
                             Add new
