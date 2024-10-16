@@ -3,12 +3,16 @@ import { useState, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import SuccessMessage from "@/Components/SuccessMessage";
+import { usePage } from "@inertiajs/react";
 
 export default function SaleForm({ medicines }) {
     const { data, setData, post, processing, errors, reset, wasSuccessful } =
         useForm({
             saleItems: [], // Array to hold multiple sale items
         });
+
+    const { props } = usePage();
+    const successMessage = props.flash?.success;
 
     const [selectedMedicine, setSelectedMedicine] = useState(null);
     const [quantity, setQuantity] = useState("");
@@ -21,9 +25,12 @@ export default function SaleForm({ medicines }) {
         setSelectedMedicine(medicine);
     };
 
+    console.log(selectedMedicine?.stock < quantity);
+
     // Add the selected medicine and quantity to the to-do list
     const addMedicineToList = () => {
         if (!selectedMedicine || !quantity) return;
+        if (selectedMedicine?.stock < quantity) return;
 
         const totalPrice = selectedMedicine.price * quantity;
 
@@ -51,6 +58,8 @@ export default function SaleForm({ medicines }) {
 
     const submit = (e) => {
         e.preventDefault();
+
+        // Perform form submission
         post(route("sales.store"), {
             onSuccess: () => reset(),
         });
@@ -73,9 +82,7 @@ export default function SaleForm({ medicines }) {
             <Head title="Create Sale" />
 
             {/* Success Message */}
-            {showSuccessMessage && (
-                <SuccessMessage message="Sale recorded successfully!" />
-            )}
+            {showSuccessMessage && <SuccessMessage message={successMessage} />}
 
             <div className="max-w-3xl mx-auto p-10 shadow-xl shadow-gray-700">
                 <h1 className="text-2xl font-bold mb-4 text-gray-100">
@@ -116,16 +123,21 @@ export default function SaleForm({ medicines }) {
                         />
                     </div>
                     {/* Quantity price: */}
+                    {errors.saleItems && quantity === "" && (
+                        <div className="text-red-500 text-sm">
+                            {errors.saleItems}
+                        </div>
+                    )}
+                    {selectedMedicine?.stock < quantity && (
+                        <div className="text-red-500 text-sm">
+                            Selected medicine is out of stock
+                        </div>
+                    )}
                     {selectedMedicine && (
                         <div className="mt-4">
                             <span className="text-gray-300">
                                 Price: ${selectedMedicine?.price * quantity}
                             </span>
-                        </div>
-                    )}
-                    {errors.saleItems && quantity === "" && (
-                        <div className="text-red-500 text-sm">
-                            {errors.saleItems}
                         </div>
                     )}
                     {/* Add to Sale List Button */}

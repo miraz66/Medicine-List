@@ -5,22 +5,14 @@ import SuccessMessage from "@/Components/SuccessMessage";
 import TextInput from "@/Components/TextInput";
 
 export default function Create({ medicine }) {
-    const {
-        data,
-        setData,
-        post,
-        processing,
-        errors,
-        reset,
-        wasSuccessful,
-        patch,
-    } = useForm({
-        name: medicine.name || "",
-        company_name: medicine.company_name || "",
-        stock: medicine.stock || "",
-        price: medicine.price || "",
-        image: medicine.image || null,
-    });
+    const { data, setData, processing, errors, reset, wasSuccessful, patch } =
+        useForm({
+            name: medicine.name || "",
+            company_name: medicine.company_name || "",
+            stock: medicine.stock || "",
+            price: medicine.price || "",
+            image: medicine.image || null,
+        });
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     useEffect(() => {

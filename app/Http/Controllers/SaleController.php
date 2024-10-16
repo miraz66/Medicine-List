@@ -57,7 +57,7 @@ class SaleController extends Controller
         }
 
         // Redirect after all sale items have been processed
-        return redirect(route('dashboard'))->with('success', 'Sales recorded successfully');
+        return redirect('/sales/create')->with('success', 'Sales recorded successfully');
     }
 
 

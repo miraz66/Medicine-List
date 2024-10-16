@@ -66,7 +66,7 @@ class MedicineController extends Controller
     {
         $medicine = Medicine::findOrFail($id);
         $medicine->update($request->all());
-        return redirect('/stock-out');
+        return redirect('/dashboard');
     }
 
     public function destroy($id)
