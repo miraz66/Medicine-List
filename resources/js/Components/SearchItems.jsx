@@ -22,7 +22,10 @@ export default function SearchItems({ route, searchTerm }) {
     };
 
     return (
-        <form onSubmit={handleSearch} className="flex items-center space-x-2">
+        <form
+            onSubmit={handleSearch}
+            className="flex items-center w-3/4 sm:w-1/3"
+        >
             {searchTerm === "search" && (
                 <input
                     className="px-4 py-2 w-full bg-white dark:text-gray-300 dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
@@ -43,12 +46,6 @@ export default function SearchItems({ route, searchTerm }) {
                     onKeyDown={handleKeyPress} // Handle Enter key press
                 />
             )}
-            <button
-                type="submit"
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md"
-            >
-                Search
-            </button>
         </form>
     );
 }

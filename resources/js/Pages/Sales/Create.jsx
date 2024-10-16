@@ -68,8 +68,6 @@ export default function SaleForm({ medicines }) {
         }
     }, [wasSuccessful]);
 
-    console.log(errors);
-
     return (
         <div className="bg-gray-600 min-h-screen pt-40">
             <Head title="Create Sale" />
@@ -105,11 +103,6 @@ export default function SaleForm({ medicines }) {
                                 </option>
                             ))}
                         </select>
-                        {errors.medicine && (
-                            <div className="text-red-500">
-                                {errors.medicine}
-                            </div>
-                        )}
                     </div>
                     {/* Quantity Field */}
                     <div className="mt-4">
@@ -118,15 +111,9 @@ export default function SaleForm({ medicines }) {
                             id="quantity"
                             type="number"
                             value={quantity}
-                            validation
                             onChange={(e) => setQuantity(e.target.value)}
                             className="mt-1 block w-full bg-gray-100 dark:bg-gray-700 p-2"
                         />
-                        {errors.quantity && (
-                            <div className="text-red-500">
-                                {errors.quantity}
-                            </div>
-                        )}
                     </div>
                     {/* Quantity price: */}
                     {selectedMedicine && (
@@ -136,8 +123,10 @@ export default function SaleForm({ medicines }) {
                             </span>
                         </div>
                     )}
-                    {errors.saleItems && (
-                        <div className="text-red-500">{errors.saleItems}</div>
+                    {errors.saleItems && quantity === "" && (
+                        <div className="text-red-500 text-sm">
+                            {errors.saleItems}
+                        </div>
                     )}
                     {/* Add to Sale List Button */}
                     <div className="mt-4">
