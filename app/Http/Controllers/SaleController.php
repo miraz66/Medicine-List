@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Filters\MedicineFilter;
 use App\Http\Requests\StoreSalesRequest;
-use App\Http\Resources\MedicineResource;
 use App\Http\Resources\SalesResource;
 use App\Models\Medicine;
 use App\Models\Sales;
-use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
@@ -59,7 +56,6 @@ class SaleController extends Controller
         // Redirect after all sale items have been processed
         return redirect('/sales/create')->with('success', 'Sales recorded successfully');
     }
-
 
     public function destroy($id)
     {

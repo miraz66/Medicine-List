@@ -30,6 +30,7 @@ Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
 Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
 Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
+Route::get('/sales/pdf/{saleId}', [SaleController::class, 'downloadPdf'])->name('sales.pdf');
 
 // Stock out
 Route::get('/stock-out', [MedicineController::class, 'stockOut'])->name('stock-out');
