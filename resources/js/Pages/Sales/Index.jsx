@@ -10,6 +10,7 @@ export default function Index({ sales }) {
     const destroyMedicine = (id) => {
         destroy(`/sales/${id}`);
     };
+
     return (
         <AuthenticatedLayout
             header={
@@ -17,7 +18,7 @@ export default function Index({ sales }) {
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200/50 leading-tight">
                         Medicines Sales
                     </h2>
-                    <SearchItems searchTerm="sales, { search: data.search }" />
+                    <SearchItems route="sales" searchTerm="category" />
                     <Link href="/sales/create">
                         <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md">
                             Sales

@@ -1,10 +1,11 @@
 import React from "react";
 import { useForm } from "@inertiajs/react";
 
-export default function SearchItems({ search, route }) {
+export default function SearchItems({ route, searchTerm }) {
     // useForm to manage the form data, including search input
     const { get, data, setData } = useForm({
-        search: search || "", // Initialize with the search term from the backend
+        search: "", // Initialize with the search term from the backend
+        category: "",
     });
 
     const handleSearch = (e) => {
@@ -22,14 +23,26 @@ export default function SearchItems({ search, route }) {
 
     return (
         <form onSubmit={handleSearch} className="flex items-center space-x-2">
-            <input
-                className="px-4 py-2 w-full bg-white dark:text-gray-300 dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                type="text"
-                placeholder="Search..."
-                value={data.search} // Controlled input bound to useForm state
-                onChange={(e) => setData("search", e.target.value)} // Update form data
-                onKeyDown={handleKeyPress} // Handle Enter key press
-            />
+            {searchTerm === "search" && (
+                <input
+                    className="px-4 py-2 w-full bg-white dark:text-gray-300 dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    type="text"
+                    placeholder="Search..."
+                    value={data.search} // Controlled input bound to useForm state
+                    onChange={(e) => setData("search", e.target.value)} // Update form data
+                    onKeyDown={handleKeyPress} // Handle Enter key press
+                />
+            )}
+            {searchTerm === "category" && (
+                <input
+                    className="px-4 py-2 w-full bg-white dark:text-gray-300 dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    type="text"
+                    placeholder="Search..."
+                    value={data.category} // Controlled input bound to useForm state
+                    onChange={(e) => setData("category", e.target.value)} // Update form data
+                    onKeyDown={handleKeyPress} // Handle Enter key press
+                />
+            )}
             <button
                 type="submit"
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md"

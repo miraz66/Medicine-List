@@ -20,7 +20,6 @@ class MedicineFilter
 
   public function applyFilters(Request $request)
   {
-    // dd($request->toArray());
     // Apply search filter
     if ($search = $request->input('search')) {
       $this->query->where(
@@ -35,8 +34,13 @@ class MedicineFilter
 
     // Apply category filter
     if ($category = $request->input('category')) {
-      // $this->query->where('category', $category);
-      dd($category);
+      $this->query->where(
+        function ($query) use ($category) {
+          $query->where('company_name', 'like', '%' . $category . '%')
+            ->orWhere('quantity', 'like', '%' . $category . '%')
+            ->orWhere('total_price', 'like', '%' . $category . '%');
+        }
+      );
     }
 
     // Apply minimum price filter

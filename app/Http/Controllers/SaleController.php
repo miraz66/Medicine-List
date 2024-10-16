@@ -19,7 +19,7 @@ class SaleController extends Controller
 
         $filteredQuery = MedicineFilter::apply($query, request());
 
-        $sales = MedicineResource::collection($filteredQuery->paginate(30));
+        $sales = SalesResource::collection($filteredQuery->paginate(30));
         return inertia('Sales/Index', ['sales' => $sales]);
     }
     public function create()
