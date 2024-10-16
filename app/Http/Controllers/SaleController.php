@@ -31,27 +31,35 @@ class SaleController extends Controller
 
     public function store(StoreSalesRequest $request)
     {
-        $medicine = Medicine::findOrFail($request->medicine_id);
 
-        if ($medicine->stock >= $request->quantity) {
-            // Deduct stock and create sale record
-            $medicine->stock -= $request->quantity;
-            $medicine->save();
+        // Loop through each sale item
+        foreach ($request->saleItems as $item) {
+            $medicine = Medicine::findOrFail($item['medicine_id']);
 
-            $total_price = $request->quantity * $medicine->price;
-            Sales::create([
-                'medicine_name' => $medicine->name,
-                'company_name' => $medicine->company_name,
-                'medicine_id' => $request->medicine_id,
-                'quantity' => $request->quantity,
-                'total_price' => $total_price,
-            ]);
+            if ($medicine->stock >= $item['quantity']) {
+                // Deduct stock and create sale record for each item
+                $medicine->stock -= $item['quantity'];
+                $medicine->save();
 
-            redirect(route('dashboard', absolute: false));
-        } else {
-            return redirect()->back()->with('error', 'Not enough stock');
+                $total_price = $item['quantity'] * $medicine->price;
+
+                Sales::create([
+                    'medicine_name' => $medicine->name,
+                    'company_name' => $medicine->company_name,
+                    'medicine_id' => $item['medicine_id'],
+                    'quantity' => $item['quantity'],
+                    'total_price' => $total_price,
+                ]);
+            } else {
+                // If one item has insufficient stock, return an error
+                return redirect("/sales/create")->with('error', 'One or more items have insufficient stock.');
+            }
         }
+
+        // Redirect after all sale items have been processed
+        return redirect(route('dashboard'))->with('success', 'Sales recorded successfully');
     }
+
 
     public function destroy($id)
     {

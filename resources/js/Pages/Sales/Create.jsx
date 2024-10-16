@@ -68,7 +68,7 @@ export default function SaleForm({ medicines }) {
         }
     }, [wasSuccessful]);
 
-    // console.log(data);
+    console.log(errors);
 
     return (
         <div className="bg-gray-600 min-h-screen pt-40">
@@ -105,6 +105,11 @@ export default function SaleForm({ medicines }) {
                                 </option>
                             ))}
                         </select>
+                        {errors.medicine && (
+                            <div className="text-red-500">
+                                {errors.medicine}
+                            </div>
+                        )}
                     </div>
                     {/* Quantity Field */}
                     <div className="mt-4">
@@ -113,17 +118,26 @@ export default function SaleForm({ medicines }) {
                             id="quantity"
                             type="number"
                             value={quantity}
+                            validation
                             onChange={(e) => setQuantity(e.target.value)}
                             className="mt-1 block w-full bg-gray-100 dark:bg-gray-700 p-2"
                         />
+                        {errors.quantity && (
+                            <div className="text-red-500">
+                                {errors.quantity}
+                            </div>
+                        )}
                     </div>
-                    {/* total price: */}
+                    {/* Quantity price: */}
                     {selectedMedicine && (
                         <div className="mt-4">
                             <span className="text-gray-300">
-                                Total: ${selectedMedicine?.price * quantity}
+                                Price: ${selectedMedicine?.price * quantity}
                             </span>
                         </div>
+                    )}
+                    {errors.saleItems && (
+                        <div className="text-red-500">{errors.saleItems}</div>
                     )}
                     {/* Add to Sale List Button */}
                     <div className="mt-4">
@@ -167,6 +181,18 @@ export default function SaleForm({ medicines }) {
                             </div>
                         )}
                     </div>
+
+                    {/* Display Total */}
+                    <div className="mt-4">
+                        <span className="text-gray-300">
+                            Total: $
+                            {saleItems.reduce(
+                                (total, item) => total + item.total_price,
+                                0
+                            )}
+                        </span>
+                    </div>
+
                     {/* Submit Button */}
                     <div className="flex items-center justify-between mt-4">
                         <Link
