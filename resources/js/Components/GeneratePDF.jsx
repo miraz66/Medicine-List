@@ -48,7 +48,7 @@ export default function GeneratePDF({ saleItems }) {
             },
             didParseCell: function (data) {
                 if (data.section === "head") {
-                    data.cell.styles.fillColor = [55, 65, 81]; // #374151
+                    data.cell.styles.fillColor = [0, 0, 0];
                     data.cell.styles.textColor = [255, 255, 255];
                     data.cell.styles.alignment = "center";
                     data.cell.styles.fontSize = 10;
