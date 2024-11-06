@@ -4,7 +4,7 @@ import InputLabel from "@/Components/InputLabel";
 import SuccessMessage from "@/Components/SuccessMessage";
 import TextInput from "@/Components/TextInput";
 
-export default function Create({ medicine }) {
+export default function Edit({ medicine }) {
     const { data, setData, processing, errors, reset, wasSuccessful, patch } =
         useForm({
             name: medicine.name || "",

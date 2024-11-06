@@ -28,15 +28,15 @@ class SaleController extends Controller
 
     public function store(StoreSalesRequest $request)
     {
-
         // Loop through each sale item
         foreach ($request->saleItems as $item) {
             $medicine = Medicine::findOrFail($item['medicine_id']);
 
             if ($medicine->stock >= $item['quantity']) {
                 // Deduct stock and create sale record for each item
-                $medicine->stock -= $item['quantity'];
-                $medicine->save();
+                // $medicine->stock -= $item['quantity'];
+                // $medicine->save();
+                $medicine->decrement('stock', $item['quantity']);
 
                 $total_price = $item['quantity'] * $medicine->price;
 

@@ -6,7 +6,7 @@ import SuccessMessage from "@/Components/SuccessMessage";
 import { usePage } from "@inertiajs/react";
 import GeneratePDF from "@/Components/GeneratePDF";
 
-export default function SaleForm({ medicines }) {
+export default function Create({ medicines }) {
     const { data, setData, post, processing, errors, reset, wasSuccessful } =
         useForm({
             saleItems: [],
